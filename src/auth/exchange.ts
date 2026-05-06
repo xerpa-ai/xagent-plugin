@@ -81,3 +81,21 @@ export async function pollDeviceToken(input: {
     scope: token.scope
   };
 }
+
+export async function refreshAccessToken(input: {
+  baseUrl: string;
+  refreshToken: string;
+}): Promise<SavedCredentials> {
+  const token = await apiPost<CliAuthTokenData>(
+    "/xagent/plugin/cli/auth/refresh",
+    { refreshToken: input.refreshToken },
+    { baseUrl: input.baseUrl }
+  );
+  return {
+    accessToken: token.accessToken,
+    refreshToken: token.refreshToken,
+    accessExpire: token.accessExpire,
+    userId: token.userId,
+    scope: token.scope
+  };
+}

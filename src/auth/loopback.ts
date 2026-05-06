@@ -35,13 +35,16 @@ export async function loginWithLoopback(input: {
       clientVersion: input.clientVersion
     });
 
+    process.stdout.write("\n  Open this URL to log in to XAgent:\n\n");
+    process.stdout.write(`    ${init.loginUrl}\n\n`);
     if (input.openBrowser) {
+      process.stdout.write("  Opening your default browser...\n");
       await openBrowser(init.loginUrl);
-    } else {
-      process.stdout.write(`Open this URL in your browser:\n${init.loginUrl}\n`);
     }
+    process.stdout.write("  Waiting for authorization (timeout 2m)...\n");
 
     const result = await callback.wait(init.state);
+    process.stdout.write("  Authorization received. Exchanging token...\n");
     return exchangeLoopbackCode({
       baseUrl: input.baseUrl,
       sessionId: init.sessionId,
@@ -104,8 +107,28 @@ function handleCallbackRequest(
   const code = parsed.searchParams.get("code") ?? "";
   const state = parsed.searchParams.get("state") ?? "";
   res.statusCode = 200;
-  res.end("XAgent CLI login completed. You can return to terminal.");
+  res.setHeader("content-type", "text/html; charset=utf-8");
+  res.end(callbackHtml());
   onCallback?.({ code, state });
+}
+
+function callbackHtml(): string {
+  return `<!doctype html>
+<html><head><meta charset="utf-8"><title>XAgent — logged in</title>
+<style>
+  body{font:16px/1.5 -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;background:#0b0d10;color:#e6e8eb;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
+  .card{text-align:center;padding:48px;border:1px solid #1f242b;border-radius:12px;background:#11151a;max-width:420px}
+  h1{margin:0 0 8px;font-size:22px;color:#7af0a3}
+  p{margin:0;color:#9aa3af}
+  small{display:block;margin-top:24px;color:#5b6370;font-size:12px}
+</style></head>
+<body><div class="card">
+  <h1>✓ Logged in to XAgent</h1>
+  <p>You can close this tab and return to the terminal.</p>
+  <small>This window will close automatically.</small>
+</div>
+<script>setTimeout(function(){window.close();},1500);</script>
+</body></html>`;
 }
 
 function waitForSingleCallback(input: {
