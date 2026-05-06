@@ -1,0 +1,8 @@
+{
+  "name": "@xagent/agent-plugin",
+  "displayName": "XAgent Skill Agent Plugin",
+  "version": "0.1.0",
+  "skills": [
+    "../skills"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "plugin-store": {
+      "source": "okx/plugin-store",
+      "sourceType": "github",
+      "skillPath": "skills/plugin-store/SKILL.md",
+      "computedHash": "0ee12de42f197bf9967b92a0177a54960b8bf4e6eb0fce40bfe145b077c1f6ec"
+    }
+  }
+}
