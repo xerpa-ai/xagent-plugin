@@ -135,7 +135,7 @@ Asks you for:
   Deployed URL (optional, blank to skip): https://t.me/my_trading_bot
 ```
 
-Then your browser opens GitHub at the right URL with the submission file pre-filled. Click **"Propose new file"** → GitHub forks `xerpa-ai/xagent-plugin` to your account and opens the PR for you. **Click "Create pull request" and you're done.**
+Then your browser opens GitHub at the right URL with the submission file pre-filled. Click **"Propose new file"** → GitHub forks `xerpa-ai/xagt-plugin` to your account and opens the PR for you. **Click "Create pull request" and you're done.**
 
 The file lands at `projects/<your-participant-id>/README.md`. Judges merge accepted submissions.
 

@@ -224,11 +224,11 @@ export async function runCli(args: string[]): Promise<number> {
       });
       process.stdout.write(`\n  ✓ Participant: ${result.participantId}\n`);
       process.stdout.write(`  ✓ Generated:   ${result.localPath}\n\n`);
-      process.stdout.write("  Submit as a PR to xerpa-ai/xagent-plugin:\n\n");
+      process.stdout.write("  Submit as a PR to xerpa-ai/xagt-plugin:\n\n");
       process.stdout.write(`    1. Fork in browser: ${result.forkUrl}\n\n`);
       process.stdout.write("    2. Clone your fork and add the submission:\n\n");
-      process.stdout.write(`       git clone https://github.com/<your-gh-username>/xagent-plugin\n`);
-      process.stdout.write(`       cd xagent-plugin\n`);
+      process.stdout.write(`       git clone https://github.com/<your-gh-username>/xagt-plugin\n`);
+      process.stdout.write(`       cd xagt-plugin\n`);
       process.stdout.write(`       git checkout -b submit-${result.participantId}\n`);
       process.stdout.write(`       mkdir -p projects/${result.participantId}\n`);
       process.stdout.write(`       cp "${result.localPath}" projects/${result.participantId}/README.md\n`);
@@ -287,7 +287,7 @@ function writeHelp(): void {
   xagt-plugin setup [--target cursor|claude-code|generic|all] [--dry-run] [--no-browser] [--loopback] [--skip-substep]
                               # one-shot: registers you + installs OKX skills
   xagt-plugin submit [--name <s>] [--intro <s>] [--repo <url>] [--deploy <url>]
-                              # generates README; you fork + PR to xerpa-ai/xagent-plugin
+                              # generates README; you fork + PR to xerpa-ai/xagt-plugin
   xagt-plugin login [--no-browser] [--loopback]   # re-login or switch accounts
   xagt-plugin logout                  # clear local credentials
   xagt-plugin install [--target ...]  # install skills only (no login)

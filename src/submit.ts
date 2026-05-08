@@ -43,7 +43,7 @@ export class NotRegisteredError extends Error {
   }
 }
 
-const DEFAULT_REPO = "xerpa-ai/xagent-plugin";
+const DEFAULT_REPO = "xerpa-ai/xagt-plugin";
 const DEFAULT_BRANCH = "main";
 
 export async function runSubmit(options: SubmitOptions): Promise<SubmitResult> {
