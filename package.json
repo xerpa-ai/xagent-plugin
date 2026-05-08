@@ -4,7 +4,7 @@
   "description": "XAgent Skill Agent Plugin installer for Claude Code, OpenClaw-style agents, Cursor, and generic skill runtimes.",
   "type": "module",
   "bin": {
-    "xagt-plugin": "./dist/cli.js"
+    "xagt-plugin": "dist/cli.js"
   },
   "files": [
     "dist",
