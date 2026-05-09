@@ -15,10 +15,9 @@ describe("OKX substeps", () => {
     }
   });
 
-  it("includes both plugin-store and onchainos-skills", () => {
+  it("runs onchainos-skills before plugin-store", () => {
     const names = OKX_SUBSTEPS.map((s) => s.name);
-    expect(names).toContain("plugin-store");
-    expect(names).toContain("onchainos-skills");
+    expect(names).toEqual(["onchainos-skills", "plugin-store"]);
   });
 
   it("executes each step non-interactively (--yes)", () => {

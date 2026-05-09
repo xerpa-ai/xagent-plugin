@@ -3,22 +3,24 @@ import { parseArgs, resolveBaseUrl } from "../src/cli.js";
 
 describe("parseArgs", () => {
   it("parses setup with new flags", () => {
-    expect(parseArgs(["setup", "--target", "generic", "--no-browser", "--skip-substep"])).toEqual({
+    expect(parseArgs(["setup", "--target", "generic", "--no-browser", "--skip-substep", "--force"])).toEqual({
       command: "setup",
       target: "generic",
       dryRun: false,
       authMode: "device",
-      skipSubstep: true
+      skipSubstep: true,
+      force: true
     });
   });
 
-  it("defaults setup to paste auth mode", () => {
+  it("defaults setup to paste auth mode and force=false", () => {
     expect(parseArgs(["setup", "--target", "generic"])).toEqual({
       command: "setup",
       target: "generic",
       dryRun: false,
       authMode: "paste",
-      skipSubstep: false
+      skipSubstep: false,
+      force: false
     });
   });
 

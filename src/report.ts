@@ -28,12 +28,14 @@ export function createInstallReport(input: {
   login: { status: "success" | "failed"; subject?: string; error?: string };
 }): InstallReportPayload {
   const { command, status, exitCode, error, duration } = input.substep;
+  const reportStatus: InstallReportPayload["substep"]["status"] =
+    status === "already-installed" ? "success" : status;
   return {
     schemaVersion: 1,
     target: input.target,
     login: input.login,
     fingerprint: input.fingerprint,
-    substep: { command, status, exitCode, error, duration },
+    substep: { command, status: reportStatus, exitCode, error, duration },
     occurredAt: new Date().toISOString()
   };
 }

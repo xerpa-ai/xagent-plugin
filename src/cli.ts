@@ -24,6 +24,7 @@ export type CliCommand =
       dryRun: boolean;
       authMode: AuthMode;
       skipSubstep: boolean;
+      force: boolean;
     }
   | { command: "login"; authMode: AuthMode }
   | { command: "logout" }
@@ -80,6 +81,7 @@ export function parseArgs(args: string[]): CliCommand {
   let target: TargetSelector = "all";
   let dryRun = false;
   let skipSubstep = false;
+  let force = false;
 
   for (let index = 0; index < rest.length; index += 1) {
     const arg = rest[index];
@@ -93,6 +95,10 @@ export function parseArgs(args: string[]): CliCommand {
     }
     if (arg === "--skip-substep") {
       skipSubstep = true;
+      continue;
+    }
+    if (arg === "--force") {
+      force = true;
       continue;
     }
 
@@ -113,7 +119,7 @@ export function parseArgs(args: string[]): CliCommand {
   }
 
   if (command === "setup") {
-    return { command, target, dryRun, authMode: resolveAuthMode(rest), skipSubstep };
+    return { command, target, dryRun, authMode: resolveAuthMode(rest), skipSubstep, force };
   }
   if (command === "report") {
     return { command, target };
@@ -196,14 +202,23 @@ export async function runCli(args: string[]): Promise<number> {
       target: command.target,
       dryRun: command.dryRun,
       authMode: command.authMode,
-      skipSubstep: command.skipSubstep
+      skipSubstep: command.skipSubstep,
+      force: command.force
     });
     for (const item of result.installResults) {
       process.stdout.write(`  ${item.message}\n`);
     }
     for (const step of result.substeps) {
-      const icon = step.status === "success" ? "✓" : step.status === "skipped" ? "·" : "✗";
-      process.stdout.write(`  ${icon} ${step.name}: ${step.status}${step.error ? ` (${step.error})` : ""}\n`);
+      const icon =
+        step.status === "success" || step.status === "already-installed" ? "✓"
+        : step.status === "skipped" ? "·"
+        : "✗";
+      const label =
+        step.status === "already-installed" ? "already installed"
+        : step.status === "success" ? "success"
+        : step.status === "skipped" ? "skipped"
+        : `failed${step.error ? ` (${step.error})` : ""}`;
+      process.stdout.write(`  ${icon} ${step.name}: ${label}\n`);
     }
     process.stdout.write("\n");
     process.stdout.write(`  ✓ Registered as ${result.credentials!.userId}\n`);
@@ -297,7 +312,7 @@ export async function runCli(args: string[]): Promise<number> {
 
 function writeHelp(): void {
   process.stdout.write(`Usage:
-  xagt-plugin setup [--target cursor|claude-code|codex|opencode|generic|all] [--dry-run] [--no-browser] [--loopback] [--skip-substep]
+  xagt-plugin setup [--target cursor|claude-code|codex|opencode|generic|all] [--force] [--dry-run] [--no-browser] [--loopback] [--skip-substep]
                               # one-shot: registers you + installs OKX skills
   xagt-plugin submit [--name <s>] [--intro <s>] [--repo <url>] [--deploy <url>]
                               # generates README; you fork + PR to xerpa-ai/xagt-plugin
